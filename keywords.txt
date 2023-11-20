@@ -1,0 +1,27 @@
+#######################################
+# Syntax Coloring Map For ESP BACKEND
+#######################################
+
+#######################################
+# Class (KEYWORD1)
+#######################################
+
+ESP_BACKEND	KEYWORD1
+Error	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+update	KEYWORD2
+reset	KEYWORD2
+download	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+None	LITERAL1
+ESP_BACKEND	LITERAL1
+BACKEND	LITERAL1
