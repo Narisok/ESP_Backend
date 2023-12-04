@@ -1,12 +1,12 @@
 #pragma once
 
-#include <cstring>
-#include <iostream>
+#include "Forward.hpp"
 
+#include "Binder.hpp"
 #include "Callable.hpp"
 
 
-#define MAX_ROUTE_SIZE (64 - (sizeof(size_t)*3))
+#define MAX_ROUTE_SIZE (63 - (sizeof(size_t)*3))
 
 namespace nii::routing
 {
@@ -16,14 +16,14 @@ namespace nii::routing
         alignas(__STDCPP_DEFAULT_NEW_ALIGNMENT__)
         uint8_t data[sizeof(size_t)*3];
 
-        char path[MAX_ROUTE_SIZE];
+        char path[MAX_ROUTE_SIZE + 1];
 
 
         inline RouteHolder(const char *path, uint8_t *callableData, size_t copySize);
         inline ~RouteHolder();
 
 
-        inline R call(int i);
+        inline R call(Binder &binder);
 
         // inline bool check(const char *path);
 
@@ -67,9 +67,10 @@ namespace nii::routing
 
 
     template<class R>
-    R RouteHolder<R>::call(int i)
+    R RouteHolder<R>::call(Binder &binder)
     {
         nii::util::Callable<R> *_callable = reinterpret_cast<nii::util::Callable<R>*>(&this->data);
-        return _callable->call(i);
+        std::cout << "here" << std::endl;
+        return _callable->call(binder);
     }
 }

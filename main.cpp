@@ -4,6 +4,7 @@
 
 #include <Routing/RouteHolder.hpp>
 #include <Routing/Callable.hpp>
+#include <Routing/Binder.hpp>
 
 #define ENABLE_LOGS
 
@@ -33,7 +34,6 @@ int main()
 
     uint8_t data[24]{};
 
-
     size_t copySize = sizeof(nii::util::CallableHolder(foo));
     new(data) nii::util::CallableHolder(foo);
     cout << sizeof(nii::util::CallableHolder(foo)) << endl;
@@ -45,9 +45,11 @@ int main()
 
     // nii::util::CallableHolder callableController(&Controller::bar);
 
-    nii::routing::RouteHolder<void> holder("ok-routet", data, copySize);
+    nii::routing::RouteHolder<void> holder("ok-routet/$", data, copySize);
 
-    holder.call(234);
+    nii::routing::Binder binder("ok-routet/2", holder.path);
+    // cout << "Binder param: " <<  binder.next().raw() << endl;
+    holder.call(binder);
     // cout << dest[0] << dest[1] << dest[2] << dest[3] << dest[4] << endl;
 
 }

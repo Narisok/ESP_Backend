@@ -1,6 +1,10 @@
 #pragma once
 
+#include "Forward.hpp"
+
 #include "Config.hpp"
+#include "Binder.hpp"
+#include "BinderCasts.hpp"
 
 namespace nii::util
 {
@@ -17,7 +21,7 @@ namespace nii::util
 
         }
 
-        virtual T call(int i) =0;
+        virtual T call(nii::routing::Binder &binder) =0;
     };
 
 
@@ -27,6 +31,7 @@ namespace nii::util
 
     };
 
+    // LAMBDA
     template<class L, class R, class ... ARGS>
     struct CallableHolder<L, R (ARGS ...)> : Callable<R>
     {
@@ -61,15 +66,16 @@ namespace nii::util
             #endif
         }
 
-        R call(int i) override
+        R call(nii::routing::Binder &binder) override
         {
             // std::cout << "CALL LAMBDA HOLDER" << std::endl;
-            return function(i);
+            return function(binder_cast<ARGS>(binder.next())...);
         }
     };
 
 
 
+    // FUNCTION
     template<class R, class ... ARGS>
     struct CallableHolder<R, R (*)(ARGS ...)> : Callable<R>
     {
@@ -95,13 +101,15 @@ namespace nii::util
             #endif
         }
 
-        R call(int i) override
+        R call(nii::routing::Binder &binder) override
         {
             std::cout << "CALL F:unction HOLDER"  << std::endl;
-            return function(i);
+            // std::cout << (binder_cast<ARGS>(binder.next())...) << std::endl;
+            return function(binder_cast<ARGS>(binder.next())...);
         }
     };
 
+    // CONTROLLER
     template<class R, class CONTROLLER, class ... ARGS>
     struct CallableHolder<R, R (CONTROLLER::*)(ARGS ...)> : Callable<R>
     {
@@ -127,11 +135,11 @@ namespace nii::util
             #endif
         }
 
-        R call(int i) override
+        R call(nii::routing::Binder &binder) override
         {
             std::cout << "CALL C:ontroller HOLDER " << this << std::endl;
             auto controller = CONTROLLER{};
-            return (controller.*function)(i);
+            return (controller.*function)(binder_cast<ARGS>(binder.next())...);
         }
 
     private:
