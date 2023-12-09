@@ -25,7 +25,7 @@ namespace nii::routing
 
         inline R call(Binder &binder);
 
-        // inline bool check(const char *path);
+        inline bool check(const char *path);
 
     };
 
@@ -72,5 +72,45 @@ namespace nii::routing
         nii::util::Callable<R> *_callable = reinterpret_cast<nii::util::Callable<R>*>(&this->data);
         std::cout << "here" << std::endl;
         return _callable->call(binder);
+    }
+
+    template<class R>
+    bool RouteHolder<R>::check(const char *path)
+    {
+        size_t i, j;
+
+        size_t pathLen = std::strlen(this->path);
+
+        for (i = 0, j = 0; i < pathLen; i++, j++) {
+
+            if (path[j] == '\0') {
+                return false;
+            }
+
+            if (this->path[i] == '$') {
+                i++;
+                const char end_arg = i < pathLen ? this->path[i] : '/';
+
+                do {
+                    j++;
+                } while( path[j+1] && path[j] != end_arg );
+
+
+            } else {
+
+                if (this->path[i] != path[j]) {
+                    return false;
+                }
+
+            }
+
+        }
+
+
+        if (path[j] != '\0') {
+            return false;
+        }
+
+        return true;
     }
 }

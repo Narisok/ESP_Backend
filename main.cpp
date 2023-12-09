@@ -2,17 +2,17 @@
 
 #include <cstring>
 
-#include <Routing/RouteHolder.hpp>
-#include <Routing/Callable.hpp>
-#include <Routing/Binder.hpp>
+#include <Router.hpp>
 
 #define ENABLE_LOGS
 
 using namespace std;
 
-void foo(int i)
+nii::Response* foo(int i)
 {
     cout << "Foo calls with i:" << i << endl;
+
+    return new nii::Response();
 }
 
 struct Controller
@@ -25,31 +25,29 @@ struct Controller
 
 int main()
 {
-    cout << "Hello world" << endl;
-    // uint8_t data[4] = {'1', '2', '3', '4'};
+    nii::Router::builder()->path("/my-path/$")->call(foo);
 
-    // uint8_t dest[5] = {'-', '-', '-', '-', '-'};
+    // auto route = nii::Router::find("/my-path/234");
 
-    // std::memcpy(&dest, &data, 5);
+    // cout << "Found: " << route << endl;
 
-    uint8_t data[24]{};
+    nii::Response *response = nii::Router::findCall("/my-path/234");
 
-    size_t copySize = sizeof(nii::util::CallableHolder(foo));
-    new(data) nii::util::CallableHolder(foo);
-    cout << sizeof(nii::util::CallableHolder(foo)) << endl;
-    // nii::util::CallableHolder callableLambda([] (int i) {
-    //     cout << "Hi lambda i:" << i << endl;
-    // });
-
-
-
+    cout << "Response code: " << response->code() << endl;
     // nii::util::CallableHolder callableController(&Controller::bar);
 
-    nii::routing::RouteHolder<void> holder("ok-routet/$", data, copySize);
+//     nii::routing::RouteHolder<void> holder("ok-routet/$", data, copySize);
 
-    nii::routing::Binder binder("ok-routet/2", holder.path);
+// if (holder.check("ok-routet/5")) {
+//     cout << "OK" << endl;
+// } else {
+//     cout << "NOT OK" << endl;
+
+// }
+
+//     nii::routing::Binder binder("ok-routet/2", holder.path);
     // cout << "Binder param: " <<  binder.next().raw() << endl;
-    holder.call(binder);
+    // holder.call(binder);
     // cout << dest[0] << dest[1] << dest[2] << dest[3] << dest[4] << endl;
 
 }

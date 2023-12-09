@@ -8,4 +8,11 @@ namespace nii
 
     }
 
+
+    NotFoundResponse::NotFoundResponse()
+        : Response()
+    {
+
+    }
+
 }
