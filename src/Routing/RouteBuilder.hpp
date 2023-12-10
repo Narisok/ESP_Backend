@@ -2,8 +2,8 @@
 
 #include "Forward.hpp"
 
+
 #include "RouteHolder.hpp"
-#include "Callable.hpp"
 
 #include <list>
 
@@ -48,11 +48,12 @@ namespace nii::routing
         inline RouteBuilder* call(T && callable)
         {
             // static_assert(sizeof(Util::CallableHolder(std::forward<T>(callable))) <= 16, "BAd size");
-             if constexpr (sizeof(nii::util::CallableHolder(std::forward<T>(callable))) > (sizeof(size_t)*3)) {
+
+            if constexpr (sizeof(decltype(nii::util::CallableHolder(std::forward<T>(callable)))) > (sizeof(size_t)*3)) {
                 std::cout << "BAD SIZE" << std::endl;
             }
 
-            this->copy_size = sizeof(nii::util::CallableHolder(std::forward<T>(callable)));
+            this->copy_size = sizeof(decltype(nii::util::CallableHolder( std::forward<T>(callable) )) );
 
             auto pointer = new(data) nii::util::CallableHolder(std::forward<T>(callable));
 

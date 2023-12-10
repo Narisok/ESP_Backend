@@ -1,0 +1,41 @@
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>NII BACKEND</title>
+</head>
+<body>
+
+
+        <h1>ZONES</h1>
+        <form action="/zones/store" method="POST">
+            <div class="form-group row ">
+                <span class="form-label col">Key</span>
+                <input type="text" name="key" class="form-control col">
+            </div>
+            <div class="form-group row ">
+                <span class="form-label col">Mode</span>
+                <select name="mode"  class="form-control form-select col" id="">
+                    <option value="0">Default</option>
+                    <option value="1">Color</option>
+                    <option value="2">Rainbow</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-sm btn-primary">Send</button>
+            </div>
+        </form>
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+            <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+            <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+        </div>
+        <div>
+            <a href="#">Add new zone</a>
+        </div>
+
+
+
+
+</body></html>

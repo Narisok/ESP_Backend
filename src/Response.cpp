@@ -8,6 +8,11 @@ namespace nii
 
     }
 
+    Response::~Response()
+    {
+
+    }
+
 
     NotFoundResponse::NotFoundResponse()
         : Response()
@@ -83,9 +88,7 @@ namespace nii
 
     size_t HtmlResponse::contentLength()
     {
-        return this->template_before.size()
-        + this->template_after.size()
-        + this->cache_data.size();
+        return this->cache_data.size();
     }
 
 

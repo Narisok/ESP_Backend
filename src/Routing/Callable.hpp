@@ -69,7 +69,7 @@ namespace nii::util
         R call(nii::routing::Binder &binder) override
         {
             // std::cout << "CALL LAMBDA HOLDER" << std::endl;
-            return function(binder_cast<ARGS>(binder.next())...);
+            return function(nii::routing::binder_cast<ARGS>(binder.next())...);
         }
     };
 
@@ -105,7 +105,7 @@ namespace nii::util
         {
             std::cout << "CALL F:unction HOLDER"  << std::endl;
             // std::cout << (binder_cast<ARGS>(binder.next())...) << std::endl;
-            return function(binder_cast<ARGS>(binder.next())...);
+            return function(nii::routing::binder_cast<ARGS>(binder.next())...);
         }
     };
 
@@ -137,9 +137,11 @@ namespace nii::util
 
         R call(nii::routing::Binder &binder) override
         {
+            #ifdef ENABLE_LOGS
             std::cout << "CALL C:ontroller HOLDER " << this << std::endl;
+            #endif
             auto controller = CONTROLLER{};
-            return (controller.*function)(binder_cast<ARGS>(binder.next())...);
+            return (controller.*function)(nii::routing::binder_cast<ARGS>(binder.next())...);
         }
 
     private:

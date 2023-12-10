@@ -1,10 +1,11 @@
-#include <iostream>
+// #include <iostream>
 
-#include <cstring>
+// #include <cstring>
 
-#include <Router.hpp>
+// #include <Router.hpp>
 
-#include <ArduinoJson.h>
+// #include <ArduinoJson.h>
+#include <Backend.hpp>
 
 #define ENABLE_LOGS
 
@@ -49,16 +50,29 @@ struct Controller
 
 int main()
 {
+
+        char json[] = "aoue{\"key\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+
+        DynamicJsonDocument doc(1024);
+        deserializeJson(doc, json);
+
+        bool status = doc["status"];
+        std::string key = doc["key"];
+        // const char* key = doc["key"];
+
+        cout << (status ? "T" : "F") << " key: " << (doc["key"].isNull() ? "N" : "NN") << endl;
+
+
     // nii::Router::builder()->path("/my-path/$")->call(foo);
-    nii::Router::builder()->path("/my-path/$")->call(bar);
+    // nii::Router::builder()->path("/my-path/$")->call(bar);
 
-    // auto route = nii::Router::find("/my-path/234");
+    // // auto route = nii::Router::find("/my-path/234");
 
-    // cout << "Found: " << route << endl;
+    // // cout << "Found: " << route << endl;
 
-    nii::Response *response = nii::Router::findCall("/my-path/234");
+    // nii::Response *response = nii::Router::findCall("/my-path/234");
 
-    cout << "Response code: " << response->code() << " type: " << response->contentType() << "\ndata:" << response->data() << endl;
+    // cout << "Response code: " << response->code() << " type: " << response->contentType() << "\ndata:" << response->data() << endl;
 
     // DynamicJsonDocument doc(1024);
     // std::string str;

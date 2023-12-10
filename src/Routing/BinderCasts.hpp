@@ -24,4 +24,14 @@ namespace nii::routing
         }
     };
 
+    template<>
+    struct BinderCaster<std::string>
+    {
+        inline static std::string cast(Parameter &&parameter)
+        {
+            // std::cout << "To bool" << std::endl;
+            return std::string(parameter.raw());
+        }
+    };
+
 }

@@ -79,12 +79,12 @@ namespace nii
                     // std::cout << "YOUR: path  --> " << path << std::endl;
 
                     Binder binder = Router::makeBinder(path, route.path);
-                    try {
+                    // try {
                         return route.call(binder);
-                    } catch (...) {
-                        std::cout << "FALLBACK" << std::endl;
-                        continue;
-                    }
+                    // } catch (...) {
+                        // std::cout << "FALLBACK" << std::endl;
+                        // continue;
+                    // }
                 }
 
             }

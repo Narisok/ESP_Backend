@@ -2,6 +2,8 @@
 
 #include <string>
 #include <ArduinoJson.h>
+#include <vector>
+#include <utility>
 
 namespace nii
 {
@@ -9,6 +11,7 @@ namespace nii
     {
      public:
         Response();
+        virtual ~Response();
 
         // virtual int code() = 0;
         virtual int code()
@@ -29,6 +32,11 @@ namespace nii
         virtual size_t contentLength()
         {
             return 3;
+        }
+
+        virtual std::vector<std::pair<std::string, std::string>> headers()
+        {
+            return {};
         }
 
      private:
@@ -119,5 +127,46 @@ namespace nii
         int status_code;
         DynamicJsonDocument doc;
         std::string cache_data;
+    };
+
+     class RedirectResponse: public Response
+    {
+     public:
+        inline RedirectResponse(const char *where)
+            : location(where)
+        {}
+
+        inline int code() override
+        {
+            return 302;
+        }
+
+        inline const char* data() override
+        {
+            return "";
+        }
+
+        inline size_t contentLength() override
+        {
+            return 0;
+        }
+
+
+        inline const char* contentType() override
+        {
+            return "";
+        }
+
+
+        inline std::vector<std::pair<std::string, std::string>> headers() override
+        {
+            return {
+                {"Location", this->location}
+            };
+        }
+
+
+     private:
+        std::string location;
     };
 }
