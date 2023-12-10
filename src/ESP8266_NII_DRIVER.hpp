@@ -6,6 +6,10 @@
 #include <Arduino.h>
 
 
+#include <FS.h>        // File System for Web Server Files
+#include <LittleFS.h>  // This file system is used.
+
+
 
 #ifndef TRACE
 #define TRACE(...) Serial.printf(__VA_ARGS__)
@@ -71,6 +75,14 @@ namespace nii
                 WiFi.begin();
             } else {
                 WiFi.begin(ssid, passPhrase);
+            }
+
+
+            TRACE("Mounting the filesystem...\n");
+            if (!LittleFS.begin()) {
+                TRACE("could not mount the filesystem...\n");
+                delay(2000);
+                ESP.restart();
             }
 
             TRACE("Connecting to WiFi...\n");
