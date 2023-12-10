@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <ArduinoJson.h>
+
 namespace nii
 {
     class Response
@@ -13,8 +16,22 @@ namespace nii
             return 200;
         }
 
-     private:
+        virtual const char* contentType()
+        {
+            return "text/plain";
+        }
 
+        virtual const char* data()
+        {
+            return "OK";
+        }
+
+        virtual size_t contentLength()
+        {
+            return 3;
+        }
+
+     private:
     };
 
     class NotFoundResponse: public Response
@@ -27,7 +44,80 @@ namespace nii
             return 404;
         }
 
+        inline const char* data() override
+        {
+            return "Not found";
+        }
+
+        inline size_t contentLength() override
+        {
+            return 10;
+        }
+
      private:
 
+    };
+
+    class HtmlResponse: public Response
+    {
+     public:
+        HtmlResponse(int code = 200, std::string data = {});
+
+        int code() override;
+
+        void setCode(int code);
+        void setData(std::string data);
+        void addData(std::string data);
+        void clear();
+
+        const char* data() override;
+
+        size_t contentLength() override;
+
+
+        inline const char* contentType() override
+        {
+            return "text/html";
+        }
+
+     private:
+
+        int status_code;
+        std::string cache_data;
+        std::string main_data;
+        std::string template_before;
+        std::string template_after;
+    };
+
+    class JsonResponse: public Response
+    {
+     public:
+        JsonResponse(int code = 200);
+
+        int code() override;
+
+        void setCode(int code);
+        void clearCached();
+
+        const char* data() override;
+
+        size_t contentLength() override;
+
+
+        inline const char* contentType() override
+        {
+            return "application/json";
+        }
+
+        inline DynamicJsonDocument& json()
+        {
+            return this->doc;
+        }
+
+     private:
+
+        int status_code;
+        DynamicJsonDocument doc;
+        std::string cache_data;
     };
 }

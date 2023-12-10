@@ -4,15 +4,39 @@
 
 #include <Router.hpp>
 
+#include <ArduinoJson.h>
+
 #define ENABLE_LOGS
 
 using namespace std;
 
 nii::Response* foo(int i)
 {
-    cout << "Foo calls with i:" << i << endl;
+    auto res = new nii::JsonResponse();
 
-    return new nii::Response();
+    res->json()["sensor"] = "gps";
+    res->json()["time"]   = 1351824120;
+    res->json()["data"][0] = 48.756080;
+    res->json()["data"][1] = 2.302038;
+
+
+    return res;
+}
+
+
+nii::Response* bar(int i)
+{
+    auto res = new nii::HtmlResponse();
+
+    res->setData(R"raw-data(
+        <H1>Hello</H1>
+    )raw-data");
+
+    res->addData(R"raw-data(
+        <div class="label label-sm label-primary">main</div>
+    )raw-data");
+
+    return res;
 }
 
 struct Controller
@@ -25,7 +49,8 @@ struct Controller
 
 int main()
 {
-    nii::Router::builder()->path("/my-path/$")->call(foo);
+    // nii::Router::builder()->path("/my-path/$")->call(foo);
+    nii::Router::builder()->path("/my-path/$")->call(bar);
 
     // auto route = nii::Router::find("/my-path/234");
 
@@ -33,7 +58,13 @@ int main()
 
     nii::Response *response = nii::Router::findCall("/my-path/234");
 
-    cout << "Response code: " << response->code() << endl;
+    cout << "Response code: " << response->code() << " type: " << response->contentType() << "\ndata:" << response->data() << endl;
+
+    // DynamicJsonDocument doc(1024);
+    // std::string str;
+    // serializeJson(doc, str);
+
+    // cout << "JSON:" << res->data() << ":" << endl;
     // nii::util::CallableHolder callableController(&Controller::bar);
 
 //     nii::routing::RouteHolder<void> holder("ok-routet/$", data, copySize);
