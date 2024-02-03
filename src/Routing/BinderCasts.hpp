@@ -9,7 +9,6 @@ namespace nii::routing
     {
         inline static int cast(Parameter &&parameter)
         {
-            std::cout << "To int" << std::endl;
             return std::stoi(parameter.raw());
         }
     };

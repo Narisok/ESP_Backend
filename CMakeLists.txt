@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 
-# add_compile_definitions(NII_EXCEPTIONS_ENABLED)
+add_compile_definitions(NII_EXCEPTIONS_ENABLED)
+add_compile_definitions(DEBUG)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

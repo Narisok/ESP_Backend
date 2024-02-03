@@ -96,6 +96,38 @@ namespace nii
         std::string template_before;
         std::string template_after;
     };
+    class PlainTextResponse: public Response
+    {
+     public:
+        inline PlainTextResponse(std::string data = {})
+            : main_data(data)
+        {}
+
+        inline int code() override
+        {
+            return 200;
+        }
+
+
+        inline const char* data() override
+        {
+            return this->main_data.c_str();
+        }
+
+        inline size_t contentLength() override
+        {
+            return this->main_data.size();
+        }
+
+
+        inline const char* contentType() override
+        {
+            return "text/plain";
+        }
+
+     private:
+        std::string main_data;
+    };
 
     class JsonResponse: public Response
     {

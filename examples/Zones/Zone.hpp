@@ -61,11 +61,6 @@ struct Zone
         return other.key == this->key;
     }
 
-    // void db_sync()
-    // {
-    //     DB<Zone>::sync(*this);
-    // }
-
     std::string db_write()
     {
         StaticJsonDocument<200> json;

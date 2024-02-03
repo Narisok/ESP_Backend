@@ -1,0 +1,22 @@
+#pragma once
+
+#include "RouteForward.hpp"
+
+#include <iostream>
+
+#include "RouteBuilder.hpp"
+
+namespace Routing
+{
+    template<class R>
+    struct Facade
+    {
+        static RouteBuilder<R> builder()
+        {
+            return RouteBuilder<R>{};
+        }
+    };
+
+    using Route = Facade<void>;
+
+}

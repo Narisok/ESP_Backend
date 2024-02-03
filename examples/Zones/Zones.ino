@@ -52,6 +52,7 @@ void setup() {
   // put your setup code here, to run once:
 
   nii::backend::setup(ssid, passPhrase, [] () {
+
     nii::Router::builder()->path("/")->call(&MainController::index);
 
 

@@ -6,6 +6,8 @@
 #include <string>
 #include <fstream>
 
+#include <LittleFS.h>
+
 template<class T>
 struct DB
 {
@@ -67,11 +69,16 @@ struct DB
             json["items"].add(item.db_write());
         }
 
-        std::ofstream fs(T::db_table()+".db.json");
+        File file = LittleFS.open((T::db_table()+".db.json").c_str(), "w");
+        if (!file) {
+            std::cout << "Failed to open file for writing" << std::endl;
+            return;
+        }
 
-        serializeJson(json, fs);
+        serializeJson(json, file);
 
-        fs.close();
+
+        file.close();
     }
 
     inline static  std::vector<T> & get()
@@ -82,10 +89,14 @@ struct DB
 
         items.clear();
 
-        std::ifstream fs(T::db_table()+".db.json");
+        File file = LittleFS.open((T::db_table()+".db.json").c_str(), "r");
+
+        if (!file) {
+            std::cout << "Failed to open file for reading" << std::endl;
+        }
 
         DynamicJsonDocument json(2048);
-        deserializeJson(json, fs);
+        deserializeJson(json, file);
 
         if (json["items"].is<JsonArray>()) {
             for (auto str : json["items"].as<JsonArray>()) {
@@ -93,10 +104,10 @@ struct DB
             }
         }
 
-        fs.close();
+        file.close();
 
 
-        cached = true;
+        // cached = true;
         return items;
     }
 };

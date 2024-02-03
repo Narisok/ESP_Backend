@@ -54,20 +54,10 @@ struct ApiZoneController
         }
 
         return res;
-
     }
 
     inline nii::Response *redirect()
     {
-        // DynamicJsonDocument request(1024);
-        // deserializeJson(request, nii::server.arg("plain"));
-
-
-        // auto res = new nii::JsonResponse();
-
-        // res->json()["status"] = true;
-        // res->json()["other"] = request;
-
         return new nii::RedirectResponse("/zones");
     }
 

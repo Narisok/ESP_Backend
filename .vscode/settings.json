@@ -57,5 +57,6 @@
         "algorithm": "cpp",
         "fstream": "cpp",
         "iomanip": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

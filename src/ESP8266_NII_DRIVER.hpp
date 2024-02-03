@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Backend.hpp"
+#include "Backend.hpp" // Бібліотека Backend framework (MVC based)
 
-#include <ESP8266WebServer.h>
-#include <Arduino.h>
+#include <ESP8266WebServer.h>   // вебсерве HTTP (TCP/IP)
+#include <Arduino.h>            // Середовище Arduino IDE
 
+#include <FS.h>        // Файлова система
+#include <LittleFS.h>  // Драйвер файлової системи
 
-#include <FS.h>        // File System for Web Server Files
-#include <LittleFS.h>  // This file system is used.
-
+#include "Response.hpp"
 
 
 #ifndef TRACE
@@ -63,11 +63,18 @@ namespace nii
     namespace backend
     {
 
-        inline void setup(const char *ssid = nullptr, const char *passPhrase = nullptr, void (*defineRoutes)() = nullptr)
+        inline void setup(
+            const char *ssid = nullptr,
+            const char *passPhrase = nullptr,
+            void (*defineRoutes)() = nullptr
+        )
         {
             delay(1000);
             Serial.begin(115200);
+
+            TRACE("Serial mounted...\n");
             delay(1000);
+
             TRACE("Start up..\n");
 
             WiFi.mode(WIFI_STA);
@@ -77,13 +84,13 @@ namespace nii
                 WiFi.begin(ssid, passPhrase);
             }
 
-
             TRACE("Mounting the filesystem...\n");
             if (!LittleFS.begin()) {
                 TRACE("could not mount the filesystem...\n");
                 delay(2000);
                 ESP.restart();
             }
+
 
             TRACE("Connecting to WiFi...\n");
             while (WiFi.status() != WL_CONNECTED) {
@@ -102,7 +109,6 @@ namespace nii
 
             server.begin();
             TRACE("hostname=%s\n", WiFi.getHostname());
-
 
             TRACE("server_url=%s\n", WiFi.localIP().toString().c_str());
         }
